@@ -2,10 +2,10 @@
 const express = require("express");
 const router = express.Router();
 
-//! Import the model 
+//! model 
 const burgers = require("../models/burger.js");
 
-//! set up routes
+//! routes
 // site root page
 router.get("/", function (req, res) {
     // pass in all db entries
@@ -20,21 +20,23 @@ router.get("/", function (req, res) {
 });
 
 // add a new db entry
-router.post("/api/burger", function (req, res) {
+router.post("/api/burgers", function (req, res) {
     // pass new entry details to the db
-    burgers.insertOne("burger_name", req.body.name, function (result) {
-        // Send back the ID of the new entry
-        res.json({
-            id: result.insertId
-        });
-    });
+    burgers.insertOne(["burger_name", "devoured"], [req.body.name, req.body.devoured],
+        function (result) {
+            // Send back the ID of the new entry
+            res.json({
+                id: result.insertId
+            });
+        }
+    );
 });
 
 // update the status of an existing db entry
-router.put("/api/burger/:id", function (req, res) {
+router.put("/api/burgers/:id", function (req, res) {
     // grab the entry's id
-    let entry = "id = " + req.params.id;
-    console.log("id: ", id);
+    var entry = "id = " + req.params.id;
+    console.log("id: ", entry);
 
     // update the entry "devoured" status
     burgers.updateOne({
@@ -47,10 +49,9 @@ router.put("/api/burger/:id", function (req, res) {
                 return res.status(404).end();
             }
             res.status(200).end();
-
         }
     );
 });
 
-// Export routes for server.js to use.
+// Export routes
 module.exports = router;

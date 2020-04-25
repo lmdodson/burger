@@ -33,7 +33,7 @@ function objToSql(ob) {
 }
 
 // Object for all SQL statement functions
-const orm = {
+var orm = {
 	selectAll: function (tableInput, cb) {
 		// define query string
 		var queryString = "SELECT * FROM " + tableInput + ";";
